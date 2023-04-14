@@ -7,7 +7,7 @@ This is a browser variant of [node-geo-tz](https://github.com/evansiroky/node-ge
 ### Unpkg
 
 ```html
-<script src="https://unpkg.com/browser-geo-tz@latest/"></script>
+<script src="http://unpkg.com/browser-geo-tz@latest/dist/geotz.js"></script>
 <script>
   console.log(await GeoTZ.find(37.3861, -122.0839));
 </script>
