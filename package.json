@@ -5,7 +5,7 @@
   "license": "MIT",
   "unpkg": "dist/geotz.js",
   "scripts": {
-    "prepublish": "npm run build",
+    "prepublishOnly": "npm run build",
     "build": "browserify src/find.ts -p [ tsify ] -d -s GeoTZ > dist/geotz.js"
   },
   "dependencies": {
@@ -16,5 +16,9 @@
     "geobuf": "^3.0.2",
     "pbf": "^3.2.1",
     "tsify": "^5.0.4"
+  },
+  "devDependencies": {
+    "@types/geobuf": "^3.0.1",
+    "@types/pbf": "^3.0.2"
   }
 }
