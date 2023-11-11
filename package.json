@@ -6,7 +6,7 @@
   "unpkg": "dist/geotz.js",
   "scripts": {
     "prepublishOnly": "npm run build",
-    "build": "browserify src/find.ts -p [ tsify ] -d -s GeoTZ > dist/geotz.js"
+    "build": "mkdir -p dist && browserify src/find.ts -p [ tsify ] -d -s GeoTZ > dist/geotz.js"
   },
   "dependencies": {
     "@turf/boolean-point-in-polygon": "^6.5.0",
