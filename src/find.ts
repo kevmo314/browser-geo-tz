@@ -5,21 +5,23 @@ import Pbf from "pbf";
 
 import { getTimezoneAtSea, oceanZones } from "./oceanUtils";
 
-async function geoData() {
+async function geoData(start: number, end: number) {
   const response = await fetch(
-    "https://www.unpkg.com/geo-tz@latest/data/geo.dat"
+    "https://cdn.jsdelivr.net/npm/geo-tz@latest/data/geo.dat",
+    {
+      headers: { Range: `bytes=${start}-${end}` },
+    }
   );
   return await response.arrayBuffer();
 }
 
 async function tzData() {
   const response = await fetch(
-    "https://www.unpkg.com/geo-tz@latest/data/index.json"
+    "https://cdn.jsdelivr.net/npm/geo-tz@latest/data/index.json"
   );
   return await response.json();
 }
 
-let geoDataPromise: Promise<any> | null = null;
 let tzDataPromise: Promise<any> | null = null;
 
 /**
@@ -114,10 +116,7 @@ export async function find(lat: number, lon: number): Promise<string[]> {
       return getTimezoneAtSea(originalLon);
     } else if (curTzData.pos >= 0 && curTzData.len) {
       // get exact boundaries
-      if (!geoDataPromise) {
-        geoDataPromise = geoData();
-      }
-      const bufSlice = (await geoDataPromise).slice(
+      const bufSlice = await geoData(
         curTzData.pos,
         curTzData.pos + curTzData.len
       );

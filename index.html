@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script src="dist/geotz.js"></script>
+  </head>
+  <body>
+    <h1>Querying time zone data with GeoJSON + HTTP Range Requests</h1>
+    <p><a href="https://github.com/kevmo314/browser-geo-tz">GitHub Repo</a></p>
+    <div>
+      <input type="text" id="lat" value="40.7143528" />
+      <input type="text" id="lng" value="-74.0059731" />
+      <button id="btn">Find</button>
+    </div>
+    <pre id="result"></pre>
+    <script>
+      var btn = document.getElementById("btn");
+      btn.addEventListener("click", function () {
+        var lat = document.getElementById("lat").value;
+        var lng = document.getElementById("lng").value;
+        GeoTZ.find(lat, lng).then(function (tz) {
+          document.getElementById("result").innerHTML = JSON.stringify(tz);
+        });
+      });
+    </script>
+  </body>
+</html>

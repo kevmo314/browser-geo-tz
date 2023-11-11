@@ -1,6 +1,7 @@
 # browser-geo-tz
 
-This is a browser variant of [node-geo-tz](https://github.com/evansiroky/node-geo-tz). The original library says that the files are too big for the browser. With the advent of faster internet connections, we disagree. Anyways, the library downloads about 27MB of data. If you are okay with that, then this library is for you!
+This is a browser variant of [node-geo-tz](https://github.com/evansiroky/node-geo-tz). The original library says that the files are too big for the browser.
+This library takes advantage of HTTP range requests to load the data quickly.
 
 ## Usage
 
