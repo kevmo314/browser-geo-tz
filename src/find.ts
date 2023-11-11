@@ -118,7 +118,7 @@ export async function find(lat: number, lon: number): Promise<string[]> {
       // get exact boundaries
       const bufSlice = await geoData(
         curTzData.pos,
-        curTzData.pos + curTzData.len
+        curTzData.pos + curTzData.len - 1
       );
       const geoJson = decode(new Pbf(bufSlice));
 
