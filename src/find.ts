@@ -7,7 +7,7 @@ import { getTimezoneAtSea, oceanZones } from "./oceanUtils";
 
 async function geoData(start: number, end: number) {
   const response = await fetch(
-    "https://cdn.jsdelivr.net/npm/geo-tz@latest/data/geo.dat",
+    "https://cdn.jsdelivr.net/npm/geo-tz@latest/data/timezones-1970.geojson.geo.dat",
     {
       headers: { Range: `bytes=${start}-${end}` },
     }
@@ -17,7 +17,7 @@ async function geoData(start: number, end: number) {
 
 async function tzData() {
   const response = await fetch(
-    "https://cdn.jsdelivr.net/npm/geo-tz@latest/data/index.json"
+    "https://cdn.jsdelivr.net/npm/geo-tz@latest/data/timezones-1970.geojson.index.json"
   );
   return await response.json();
 }
