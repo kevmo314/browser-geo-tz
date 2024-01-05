@@ -1,6 +1,6 @@
 {
   "name": "browser-geo-tz",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "author": "Kevin Wang <kevmo314@gmail.com>",
   "license": "MIT",
   "unpkg": "dist/geotz.js",
