@@ -5,33 +5,80 @@ import Pbf from "pbf";
 
 import { getTimezoneAtSea, oceanZones } from "./oceanUtils";
 
-async function geoData(start: number, end: number) {
-  const response = await fetch(
-    "https://cdn.jsdelivr.net/npm/geo-tz@latest/data/timezones-1970.geojson.geo.dat",
-    {
-      headers: { Range: `bytes=${start}-${end}` },
-    }
-  );
-  return await response.arrayBuffer();
-}
-
-async function tzData() {
-  const response = await fetch(
-    "https://cdn.jsdelivr.net/npm/geo-tz@latest/data/timezones-1970.geojson.index.json"
-  );
-  return await response.json();
-}
-
-let tzDataPromise: Promise<any> | null = null;
+type GeoDataSource =
+  | string
+  | ((start: number, end: number) => Promise<ArrayBuffer>);
+type TzDataSource = string | (() => Promise<any>);
 
 /**
- * Find the timezone ID(s) at the given GPS coordinates.
+ * Initialize the GeoTZ module with the given data sources.
+ *
+ * @param geoDataSource A string of the URL of the GeoJSON data or a function that returns an ArrayBuffer given a byte range.
+ * @param tzDataSource A string of the URL of the index.json data or a function that returns an object.
+ * @returns An object with a find function that can be used to find the timezone ID(s) at the given GPS coordinates.
+ */
+export function init(
+  geoDataSource: GeoDataSource = "https://cdn.jsdelivr.net/npm/geo-tz@latest/data/timezones-1970.geojson.geo.dat",
+  tzDataSource: TzDataSource = "https://cdn.jsdelivr.net/npm/geo-tz@latest/data/timezones-1970.geojson.index.json",
+) {
+  const geoData =
+    typeof geoDataSource === "string"
+      ? async (start: number, end: number) => {
+          const response = await fetch(geoDataSource, {
+            headers: { Range: `bytes=${start}-${end}` },
+          });
+          return await response.arrayBuffer();
+        }
+      : geoDataSource;
+
+  let tzDataPromise: Promise<any> | null = null;
+
+  const tzData =
+    typeof tzDataSource === "string"
+      ? async () => {
+          if (tzDataPromise) {
+            return await tzDataPromise;
+          }
+          const promise = fetch(tzDataSource).then((response) =>
+            response.json(),
+          );
+          tzDataPromise = promise;
+          return await promise;
+        }
+      : tzDataSource;
+
+  return {
+    /**
+     * Find the timezone ID(s) at the given GPS coordinates.
+     *
+     * @param lat latitude (must be >= -90 and <=90)
+     * @param lon longitue (must be >= -180 and <=180)
+     * @returns An array of string of TZIDs at the given coordinate.
+     */
+    find: async (lat: number, lon: number) => {
+      return await findImpl(geoData, tzData, lat, lon);
+    },
+  };
+}
+
+/**
+ * Find the timezone ID(s) at the given GPS coordinates. This is identical to calling
+ * `init()` and then calling `find()`.
  *
  * @param lat latitude (must be >= -90 and <=90)
  * @param lon longitue (must be >= -180 and <=180)
  * @returns An array of string of TZIDs at the given coordinate.
  */
 export async function find(lat: number, lon: number): Promise<string[]> {
+  return await init().find(lat, lon);
+}
+
+async function findImpl(
+  geoData: (start: number, end: number) => Promise<ArrayBuffer>,
+  tzData: () => Promise<any>,
+  lat: number,
+  lon: number,
+): Promise<string[]> {
   const originalLon = lon;
 
   let err;
@@ -78,11 +125,10 @@ export async function find(lat: number, lon: number): Promise<string[]> {
     midLon: 0,
   };
   let quadPos = "";
-  if (!tzDataPromise) {
-    tzDataPromise = tzData();
-  }
 
-  let curTzData = (await tzDataPromise).lookup;
+  const tzDataResponse = await tzData();
+
+  let curTzData = tzDataResponse.lookup;
 
   while (true) {
     // calculate next quadtree position
@@ -118,7 +164,7 @@ export async function find(lat: number, lon: number): Promise<string[]> {
       // get exact boundaries
       const bufSlice = await geoData(
         curTzData.pos,
-        curTzData.pos + curTzData.len - 1
+        curTzData.pos + curTzData.len - 1,
       );
       const geoJson = decode(new Pbf(bufSlice));
 
@@ -143,7 +189,7 @@ export async function find(lat: number, lon: number): Promise<string[]> {
         : getTimezoneAtSea(originalLon);
     } else if (curTzData.length > 0) {
       // exact match found
-      const timezones = (await tzDataPromise).timezones;
+      const timezones = tzDataResponse.timezones;
       return curTzData.map((idx) => timezones[idx]);
     } else if (typeof curTzData !== "object") {
       // not another nested quad index, throw error
