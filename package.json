@@ -1,12 +1,13 @@
 {
   "name": "browser-geo-tz",
-  "version": "0.0.7",
+  "version": "0.1.0",
   "author": "Kevin Wang <kevmo314@gmail.com>",
   "license": "MIT",
   "unpkg": "dist/geotz.js",
   "scripts": {
     "prepublishOnly": "npm run build",
-    "build": "mkdir -p dist && browserify src/find.ts -p [ tsify ] -d -s GeoTZ > dist/geotz.js"
+    "build": "mkdir -p dist && browserify src/find.ts -p [ tsify ] -d -s GeoTZ > dist/geotz.js",
+    "test": "vitest"
   },
   "dependencies": {
     "@turf/boolean-point-in-polygon": "^6.5.0",
@@ -15,7 +16,8 @@
     "browserify-fs": "^1.0.0",
     "geobuf": "^3.0.2",
     "pbf": "^3.2.1",
-    "tsify": "^5.0.4"
+    "tsify": "^5.0.4",
+    "vitest": "^1.5.3"
   },
   "devDependencies": {
     "@types/geobuf": "^3.0.1",
