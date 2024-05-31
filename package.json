@@ -12,15 +12,15 @@
   "dependencies": {
     "@turf/boolean-point-in-polygon": "^6.5.0",
     "@turf/helpers": "^6.5.0",
-    "browserify": "^17.0.0",
-    "browserify-fs": "^1.0.0",
     "geobuf": "^3.0.2",
-    "pbf": "^3.2.1",
-    "tsify": "^5.0.4",
-    "vitest": "^1.5.3"
+    "pbf": "^3.2.1"
   },
   "devDependencies": {
     "@types/geobuf": "^3.0.1",
-    "@types/pbf": "^3.0.2"
+    "@types/pbf": "^3.0.2",
+    "browserify": "^17.0.0",
+    "browserify-fs": "^1.0.0",
+    "tsify": "^5.0.4",
+    "vitest": "^1.5.3"
   }
 }
