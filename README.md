@@ -1,6 +1,6 @@
 # browser-geo-tz
 
-![npm version](https://img.shields.io/npm/v/browser-geo-tz)
+[![npm version](https://img.shields.io/npm/v/browser-geo-tz)](https://www.npmjs.com/package/browser-geo-tz)
 
 This is a browser variant of [node-geo-tz](https://github.com/evansiroky/node-geo-tz). The original library says that the files are too big for the browser.
 This library takes advantage of HTTP range requests to load the data quickly. Check out the [demo](https://kevmo314.github.io/browser-geo-tz/).
