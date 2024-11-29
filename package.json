@@ -1,9 +1,10 @@
 {
   "name": "browser-geo-tz",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "author": "Kevin Wang <kevmo314@gmail.com>",
   "license": "MIT",
   "unpkg": "dist/geotz.js",
+  "types": "index.d.ts",
   "scripts": {
     "prepublishOnly": "npm run build",
     "build": "mkdir -p dist && browserify src/find.ts -p [ tsify ] -d -s GeoTZ > dist/geotz.js",

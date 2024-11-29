@@ -1,2 +1,2 @@
-export * from 'browser-geo-tz/src/find';
-export * from 'browser-geo-tz/src/oceanUtils';
+export * from './src/find';
+export * from './src/oceanUtils';
