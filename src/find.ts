@@ -24,11 +24,11 @@ export function init(
   const geoData =
     typeof geoDataSource === "string"
       ? async (start: number, end: number) => {
-          const response = await fetch(geoDataSource, {
-            headers: { Range: `bytes=${start}-${end}` },
-          });
-          return await response.arrayBuffer();
-        }
+        const response = await fetch(geoDataSource, {
+          headers: { Range: `bytes=${start}-${end}` },
+        });
+        return await response.arrayBuffer();
+      }
       : geoDataSource;
 
   let tzDataPromise: Promise<any> | null = null;
@@ -36,15 +36,15 @@ export function init(
   const tzData =
     typeof tzDataSource === "string"
       ? async () => {
-          if (tzDataPromise) {
-            return await tzDataPromise;
-          }
-          const promise = fetch(tzDataSource).then((response) =>
-            response.json(),
-          );
-          tzDataPromise = promise;
-          return await promise;
+        if (tzDataPromise) {
+          return await tzDataPromise;
         }
+        const promise = fetch(tzDataSource).then((response) =>
+          response.json(),
+        );
+        tzDataPromise = promise;
+        return await promise;
+      }
       : tzDataSource;
 
   return {
@@ -173,11 +173,14 @@ async function findImpl(
       if (geoJson.type === "FeatureCollection") {
         for (let i = 0; i < geoJson.features.length; i++) {
           if (inside(pt, geoJson.features[i] as any)) {
-            timezonesContainingPoint.push(geoJson.features[i].properties.tzid);
+            const properties = geoJson.features[i].properties;
+            if (properties) {
+              timezonesContainingPoint.push(properties.tzid);
+            }
           }
         }
       } else if (geoJson.type === "Feature") {
-        if (inside(pt, geoJson as any)) {
+        if (inside(pt, geoJson as any) && geoJson.properties) {
           timezonesContainingPoint.push(geoJson.properties.tzid);
         }
       }
@@ -190,7 +193,7 @@ async function findImpl(
     } else if (curTzData.length > 0) {
       // exact match found
       const timezones = tzDataResponse.timezones;
-      return curTzData.map((idx) => timezones[idx]);
+      return curTzData.map((idx: number) => timezones[idx]);
     } else if (typeof curTzData !== "object") {
       // not another nested quad index, throw error
       err = new Error("Unexpected data type");
