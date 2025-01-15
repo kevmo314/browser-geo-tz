@@ -4,11 +4,13 @@
   "author": "Kevin Wang <kevmo314@gmail.com>",
   "license": "MIT",
   "unpkg": "dist/geotz.js",
-  "types": "index.ts",
-  "module": "index.ts",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
   "scripts": {
     "prepublishOnly": "npm run build",
     "build": "mkdir -p dist && browserify src/find.ts -p [ tsify ] -d -s GeoTZ > dist/geotz.js",
+    "compile": "del /s /q dist && tsup",
     "test": "vitest"
   },
   "dependencies": {
@@ -23,6 +25,7 @@
     "browserify": "^17.0.0",
     "browserify-fs": "^1.0.0",
     "tsify": "^5.0.4",
+    "tsup": "^8.3.5",
     "vitest": "^1.5.3"
   }
 }
