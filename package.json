@@ -24,7 +24,7 @@
   "devDependencies": {
     "@types/geobuf": "^3.0.1",
     "@types/pbf": "^3.0.2",
-    "esbuild": "^0.25.3",
-    "vitest": "^1.6.1"
+    "esbuild": "^0.25.4",
+    "vitest": "^4.1.4"
   }
 }
