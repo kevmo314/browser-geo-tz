@@ -27,10 +27,15 @@ export function init(
         const response = await fetch(geoDataSource, {
           headers: {
             Range: `bytes=${start}-${end}`,
-            "Accept-Encoding": "identity",
           },
         });
-        return await response.arrayBuffer();
+        const buffer = await response.arrayBuffer();
+        // If the server ignored the Range header and returned the full file,
+        // slice the relevant portion ourselves.
+        if (response.status === 200) {
+          return buffer.slice(start, end + 1);
+        }
+        return buffer;
       }
       : geoDataSource;
 
