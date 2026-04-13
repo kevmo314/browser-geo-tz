@@ -27,6 +27,7 @@ export function init(
         const response = await fetch(geoDataSource, {
           headers: {
             Range: `bytes=${start}-${end}`,
+            "Accept-Encoding": "identity",
           },
         });
         const buffer = await response.arrayBuffer();
