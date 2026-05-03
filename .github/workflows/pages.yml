@@ -3,6 +3,9 @@ name: GitHub Pages
 on:
   push:
     branches: ["main"]
+  schedule:
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -20,6 +23,12 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run build --if-present
+      - name: Fetch latest geo-tz data
+        run: |
+          npm install --no-save --no-package-lock geo-tz@latest
+          mkdir -p data
+          cp node_modules/geo-tz/data/timezones-1970.geojson.geo.dat data/
+          cp node_modules/geo-tz/data/timezones-1970.geojson.index.json data/
       - uses: actions/configure-pages@v3
       - uses: actions/upload-pages-artifact@v3
         with:
