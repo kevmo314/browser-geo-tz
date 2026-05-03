@@ -3,6 +3,10 @@
   "version": "0.2.2",
   "author": "Kevin Wang <kevmo314@gmail.com>",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kevmo314/browser-geo-tz.git"
+  },
   "unpkg": "dist/geotz.js",
   "main": "dist/geotz.cjs",
   "module": "dist/geotz.mjs",
