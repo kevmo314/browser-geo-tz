@@ -18,8 +18,8 @@ type TzDataSource = string | (() => Promise<any>);
  * @returns An object with a find function that can be used to find the timezone ID(s) at the given GPS coordinates.
  */
 export function init(
-  geoDataSource: GeoDataSource = "https://cdn.jsdelivr.net/npm/geo-tz@latest/data/timezones-1970.geojson.geo.dat",
-  tzDataSource: TzDataSource = "https://cdn.jsdelivr.net/npm/geo-tz@latest/data/timezones-1970.geojson.index.json",
+  geoDataSource: GeoDataSource = "https://kevmo314.github.io/browser-geo-tz/data/timezones-1970.geojson.geo.dat",
+  tzDataSource: TzDataSource = "https://kevmo314.github.io/browser-geo-tz/data/timezones-1970.geojson.index.json",
 ) {
   const geoData =
     typeof geoDataSource === "string"
